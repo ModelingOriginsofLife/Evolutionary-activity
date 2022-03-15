@@ -50,11 +50,11 @@ def trace(screen, colvalvec):            # eachcolval = [key,activityvalue]
             y = yvals[i]
             col = cols[i]
             screen.set_at((x,y),col)
-    else:                           # then scroll
+    else:                                 #  then scroll when full
         yvals = [Height - y * Height / ymax
                  for y in yvals]
         screen.scroll(-1,0)    # -1 => 1 pixel to left
-        draw.line(screen,[100,100,100], # grey line first
+        draw.line(screen,[10,10,10], # grey line first
                   (Width-1,Height),(Width-1,0))
         for i in range(len(yvals)):
             x = Width-1
@@ -104,12 +104,12 @@ def main():
     # foo = Graph(0,250,Width,Height,"Activity")
     screen = display.set_mode([Width, Height])
     display.set_caption("Activity")
-    draw.rect(screen, [100, 100, 100],(0, 0 , Width, Height + 1), 0)
+    draw.rect(screen, [10, 10, 10],(0, 0 , Width, Height + 1), 0)
     display.update()
     actcnt = 0;
     colors = {}
     cnt = 0;
-    datpre = None
+    actpre = None
     while True:
         # get input
         for ee in event.get():
@@ -155,19 +155,29 @@ def main():
             for dd in dat:
                 datout.write(str(dd)+' ')
             datout.write("\n")
+        activity = {}
+        actflat = {}
         fofo = range(0,ldat,2)          # swizzle data to graph: idx of beginning of each data chunk
+        for i in range(len(fofo)):
+            activity[dat[fofo[i]]] = int(dat[fofo[i]+1])
         dat = [(dat[fofo[i]],int(dat[fofo[i]+1])) for i in range(len(fofo))]
         # dat = [(x,y) for [x,y] in dat]
-        for (xx,act) in dat:
+
+        for xx in activity:
             if xx not in colors:
                 if cnt==0:              # 1st data chunk all white
                     colors[xx] = (255,255,255)
                 else:
                     colors[xx] = palette[actcnt%255]
                     actcnt += 1
-        if datpre is not None:
-            pass
-        trdat = [(colors[xx],yy) for xx,yy in dat]
+        if actpre is not None:
+            for xx in activity:
+                if xx in actmax:
+                    if activity[xx] <= actmax[xx]:   # flat detected
+                        activity[xx] = None
+                    else:
+                        actmax[xx] = activity[xx]
+        trdat = [(colors[xx],activity[xx]) for xx in activity if activity[xx] is not None]   # assemble data for trace
         if len(trdat) > maxact:
             trdat = trdat[0:maxact]
         trace(screen,trdat)
@@ -176,7 +186,6 @@ def main():
         #         datout.write(str(act)+' ')
         #     datout.write("\n")
         cnt += 1                        # counting number of data chunks piped from source program
-        datpre = dat
 
 if __name__=='__main__':
     main()

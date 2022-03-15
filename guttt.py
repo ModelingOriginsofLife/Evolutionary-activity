@@ -7,7 +7,8 @@
 # Phys. Rev. Lett. 100, 058102 (2008)
 
 
-import pygame, sys, os
+import pygamesilent as pygame
+import sys, os
 from pygame.locals import *
 import random
 from numpy.random import randint
@@ -27,7 +28,7 @@ Dens = 0.01                                # initial density of agents
 # agent ID specification
 LenID = 64    # length of ID string
 Nletters = 8   # number of letters used  e.g. 4 => letters drawn from ABCDabcd
-Nrelevant = 2       # number of relevant letters (others are neutral)
+Nrelevant = 3       # number of relevant letters (others are neutral)
 Seed = 0       # random seed
 
 # reproduction

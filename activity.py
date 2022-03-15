@@ -1,4 +1,6 @@
-#!/opt/local/bin/python
+#!/usr/bin/env python
+# needs python2
+######!/usr/local/bin/python
 
 # like graphactivity.py, but try and use subprocess module so that execution is simply
 # activity.py simulator sim_arg1 sim_arg2 ...
@@ -124,6 +126,7 @@ def main():
 
     argv = sys.argv
     argv = argv[1:]
+    argv = ['./'+a for a in argv]
     sys.stderr.writelines(str(argv)+'\n')
     proc = sp.Popen(argv,
                     stdout = sp.PIPE)
