@@ -38,7 +38,7 @@ def trace(screen, colvalvec):            # eachcolval = [key,activityvalue]
         yvals.append(colval[1])
         cnt += 1
         if cnt>maxact:
-            print "too many activity points..."
+            print("too many activity points...")
             break
     # do the scroll:
     if ncount<Width:      # first, don't scroll
@@ -83,23 +83,23 @@ palette = tuple(spec(x/256.) for x in range(256))
 def omain():
     system("rm -f /tmp/activity; mkfifo -m 666 /tmp/activity")
     pipename = "/tmp/activity"
-    print 'opening',pipename
+    print('opening',pipename)
     pipefd = open(pipename,"r")
-    print 'opened',pipename
+    print('opened',pipename)
     while True:
         dat = pipefd.readline()
         dat = [int(x) for x in dat.split()]
-        print dat
-        print '\n---------------\n'
+        print(dat)
+        print('\n---------------\n')
 
 def main():
     global ymax
     system("rm -f /tmp/activity; mkfifo -m 666 /tmp/activity")
     pipename = "/tmp/activity"
     
-    print 'opening',pipename
+    print('opening',pipename)
     pipefd = open(pipename,"r")
-    print 'opened',pipename
+    print('opened',pipename)
     
     # foo = Graph(0,250,Width,Height,"Activity")
     screen = display.set_mode([Width, Height])
@@ -120,16 +120,16 @@ def main():
                     return
                 elif ee.key == K_PLUS:
                     ymax = ymax * 2
-                    print 'new ymax =',ymax
+                    print('new ymax =',ymax)
                 elif ee.key == K_KP_PLUS:
                     ymax = ymax * 2
-                    print 'new ymax =',ymax
+                    print('new ymax =',ymax)
                 elif ee.key == K_EQUALS:
                     ymax = ymax * 2
-                    print 'new ymax =',ymax
+                    print('new ymax =',ymax)
                 elif ee.key == K_MINUS:
                     ymax = ymax / 2
-                    print 'new ymax =',ymax
+                    print('new ymax =',ymax)
         """
         yval = cnt%Height
         col = palette[cnt%255]
@@ -139,7 +139,7 @@ def main():
         try:
             dat = pipefd.readline()
         except:
-            print 'had a problem reading activity pipe.'
+            print('had a problem reading activity pipe.')
         dat = dat.split()
 # dat has (string,count) pairs on each line.
 #        dat = [int(x) for x in dat.split()]
@@ -147,10 +147,10 @@ def main():
         if ldat == 0:
             return
         if ldat % 2:
-            print "length of activity output not multiple of 2!"
-            print '++++++++++ '
-            print dat
-            print '---------------\n'
+            print("length of activity output not multiple of 2!")
+            print('++++++++++ ')
+            print(dat)
+            print('---------------\n')
         if datfile != None:            # write to external file
             for dd in dat:
                 datout.write(str(dd)+' ')

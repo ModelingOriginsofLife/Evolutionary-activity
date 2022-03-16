@@ -79,14 +79,14 @@ def dupgene(id1,id2):                     # id1 from parent, id2 from child
     start = min([tmp1,tmp2])
     end = max([tmp1,tmp2])
     gene = id[start:end]
-#    print 'start, end = ',start,end
-#    print 'gene = ',gene
+#    print('start, end = ',start,end)
+#    print('gene = ',gene)
     targ = random.choice(range(len(id2)))
-#    print 'target = ',targ
+#    print('target = ',targ)
     if targ + len(gene) > len(id):    # need to trim...
         cut = targ+len(gene) - len(id)
         gene = gene[0:(len(gene)-cut)]
-#        print 'new gene = ',gene
+#        print('new gene = ',gene)
     ret = id2[:targ] + gene + id2[(targ+len(gene)):]
     return ret
 
@@ -142,7 +142,7 @@ class Latmap:
         for a in self.agents:
             if a is not None:
                 if self.lattice[a.x][a.y] != a.popidx:
-                    print 'prob at ',a.x,a.y,': popidx ',a.popidx
+                    print('prob at ',a.x,a.y,': popidx ',a.popidx)
                     return False
         return True
 
@@ -180,14 +180,14 @@ class Latmap:
         
 
     def compactify_agents(self):          # compactify agent list after some deaths
-#        print 'Before compactify  Nagents vs. countlattice:  ',len(self.agents),self.countlattice()
+#        print('Before compactify  Nagents vs. countlattice:  ',len(self.agents),self.countlattice())
         self.agents = [self.agents[i] for i in range(len(self.agents)) if self.agents[i] is not None]
         for i in range(len(self.agents)):   # reset popidx for all agents...
             self.agents[i].popidx = i
             x = self.agents[i].x
             y = self.agents[i].y
             self.lattice[x][y] = i
-#        print 'After compactify Nagents vs. countlattice:  ',len(self.agents),self.countlattice()
+#        print('After compactify Nagents vs. countlattice:  ',len(self.agents),self.countlattice())
 
     def init_agents(self):
         N = int(self.dens*Width*Height)
@@ -249,7 +249,7 @@ class Latmap:
         w = Width
         h = Height
         popdirty = 0                      # to keep track of removals to compact agent list at end
-        idx = range(len(self.agents))
+        idx = list(range(len(self.agents)))
         random.shuffle(idx)               # for random updating of all agents
         for ii in idx:
             a = self.agents[ii]
@@ -267,7 +267,7 @@ class Latmap:
             d = (y - 1 +h) % h 
             nbrs = ((l,y),(r,y),(x,u),(x,d))
             # check 2 random nbrs...
-            nbridx = range(len(nbrs))
+            nbridx = list(range(len(nbrs)))
             random.shuffle(nbridx)
             for nbr in [nbrs[nbridx[0]],nbrs[nbridx[1]]]:
                 xx,yy = nbr
@@ -277,10 +277,10 @@ class Latmap:
                     assert self.agent_exists(anbr)
                     assert self.agent_exists(a)
                     if a.popidx == anbr.popidx:   # error: duplicate
-                        print 'a xy, popidx = ',a.x,a.y,a.popidx
-                        print 'anbr xy, popidx = ',anbr.x,anbr.y,anbr.popidx
-                        print nbrs
-                        print 'cur nbr = ',nbr
+                        print('a xy, popidx = ',a.x,a.y,a.popidx)
+                        print('anbr xy, popidx = ',anbr.x,anbr.y,anbr.popidx)
+                        print(nbrs)
+                        print('cur nbr = ',nbr)
                         assert False
                     self.predate(a,anbr)
                 else:
@@ -333,7 +333,7 @@ class Latmap:
             strout = ''
             for x in idact:
                 strout = strout + x + ' ' + str(idact[x]) + ' '
-            print strout
+            print(strout)
             sys.stdout.flush()
             ## end activity computation 
             ####################################################
